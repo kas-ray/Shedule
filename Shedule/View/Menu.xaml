@@ -1,0 +1,29 @@
+﻿<Page x:Class="Shedule.View.Menu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Shedule.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Menu">
+
+    <Grid Background="#F3F7FA">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button Command="{Binding Path=MainCommand}" 
+                    Style="{StaticResource MenuButtonsStyle}" Content="Главная"/>
+            <Button Command="{Binding Path=DisciplinesCommand}" 
+                    Style="{StaticResource MenuButtonsStyle}" Content="Предметы"/>
+            <Button Command="{Binding Path=TeachersCommand}" 
+                    Style="{StaticResource MenuButtonsStyle}" Content="Преподаватели"/>
+            <!--<Button Command="{Binding Path=TimesCommand}" Width="200" Content="Звонки"/>-->
+        </StackPanel>
+        <Frame Grid.Row="1"
+               Content="{Binding Path=CurrentPage}"
+               NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Page>

@@ -1,0 +1,547 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище ScheduleBaseModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Dates">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Start" Type="date" Nullable="false" />
+          <Property Name="End" Type="date" Nullable="false" />
+          <Property Name="Cabinet" Type="nchar" MaxLength="10" />
+          <Property Name="Alternation" Type="bit" Nullable="false" />
+          <Property Name="Week_days_Id" Type="int" Nullable="false" />
+          <Property Name="Times_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Disciplines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="300" />
+        </EntityType>
+        <EntityType Name="Eventes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Lessons_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lessons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Disciplines_Id" Type="int" Nullable="false" />
+          <Property Name="Lessons_types_Id" Type="int" Nullable="false" />
+          <Property Name="Teachers_Id" Type="int" Nullable="false" />
+          <Property Name="Dates_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lessons_types">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Teachers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FIO" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descriotion" Type="nvarchar" MaxLength="300" />
+        </EntityType>
+        <EntityType Name="Times">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Start" Type="time" Precision="7" Nullable="false" />
+          <Property Name="End" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Week_days">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="2" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Dates_Times">
+          <End Role="Times" Type="Self.Times" Multiplicity="1" />
+          <End Role="Dates" Type="Self.Dates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Times">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dates">
+              <PropertyRef Name="Times_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dates_Week_days">
+          <End Role="Week_days" Type="Self.Week_days" Multiplicity="1" />
+          <End Role="Dates" Type="Self.Dates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Week_days">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dates">
+              <PropertyRef Name="Week_days_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Eventes_Lessons">
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="1" />
+          <End Role="Eventes" Type="Self.Eventes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Eventes">
+              <PropertyRef Name="Lessons_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lessons_Dates">
+          <End Role="Dates" Type="Self.Dates" Multiplicity="1" />
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dates">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="Dates_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lessons_Disciplines">
+          <End Role="Disciplines" Type="Self.Disciplines" Multiplicity="1" />
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Disciplines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="Disciplines_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lessons_Lessons_types">
+          <End Role="Lessons_types" Type="Self.Lessons_types" Multiplicity="1" />
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons_types">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="Lessons_types_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lessons_Teachers">
+          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1" />
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teachers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="Teachers_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ScheduleBaseModelContainer">
+          <EntitySet Name="Dates" EntityType="Self.Dates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Disciplines" EntityType="Self.Disciplines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Eventes" EntityType="Self.Eventes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lessons" EntityType="Self.Lessons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lessons_types" EntityType="Self.Lessons_types" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Times" EntityType="Self.Times" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Week_days" EntityType="Self.Week_days" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Dates_Times" Association="Self.FK_Dates_Times">
+            <End Role="Times" EntitySet="Times" />
+            <End Role="Dates" EntitySet="Dates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dates_Week_days" Association="Self.FK_Dates_Week_days">
+            <End Role="Week_days" EntitySet="Week_days" />
+            <End Role="Dates" EntitySet="Dates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Eventes_Lessons" Association="Self.FK_Eventes_Lessons">
+            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="Eventes" EntitySet="Eventes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_Dates" Association="Self.FK_Lessons_Dates">
+            <End Role="Dates" EntitySet="Dates" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_Disciplines" Association="Self.FK_Lessons_Disciplines">
+            <End Role="Disciplines" EntitySet="Disciplines" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_Lessons_types" Association="Self.FK_Lessons_Lessons_types">
+            <End Role="Lessons_types" EntitySet="Lessons_types" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_Teachers" Association="Self.FK_Lessons_Teachers">
+            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ScheduleBaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Dates">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Start" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="End" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Cabinet" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Alternation" Type="Boolean" Nullable="false" />
+          <Property Name="Week_days_Id" Type="Int32" Nullable="false" />
+          <Property Name="Times_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Times" Relationship="Self.FK_Dates_Times" FromRole="Dates" ToRole="Times" />
+          <NavigationProperty Name="Week_days" Relationship="Self.FK_Dates_Week_days" FromRole="Dates" ToRole="Week_days" />
+          <NavigationProperty Name="Lessons" Relationship="Self.FK_Lessons_Dates" FromRole="Dates" ToRole="Lessons" />
+        </EntityType>
+        <EntityType Name="Disciplines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Lessons" Relationship="Self.FK_Lessons_Disciplines" FromRole="Disciplines" ToRole="Lessons" />
+        </EntityType>
+        <EntityType Name="Eventes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Lessons_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Lessons" Relationship="Self.FK_Eventes_Lessons" FromRole="Eventes" ToRole="Lessons" />
+        </EntityType>
+        <EntityType Name="Lessons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Disciplines_Id" Type="Int32" Nullable="false" />
+          <Property Name="Lessons_types_Id" Type="Int32" Nullable="false" />
+          <Property Name="Teachers_Id" Type="Int32" Nullable="false" />
+          <Property Name="Dates_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Dates" Relationship="Self.FK_Lessons_Dates" FromRole="Lessons" ToRole="Dates" />
+          <NavigationProperty Name="Disciplines" Relationship="Self.FK_Lessons_Disciplines" FromRole="Lessons" ToRole="Disciplines" />
+          <NavigationProperty Name="Eventes" Relationship="Self.FK_Eventes_Lessons" FromRole="Lessons" ToRole="Eventes" />
+          <NavigationProperty Name="Lessons_types" Relationship="Self.FK_Lessons_Lessons_types" FromRole="Lessons" ToRole="Lessons_types" />
+          <NavigationProperty Name="Teachers" Relationship="Self.FK_Lessons_Teachers" FromRole="Lessons" ToRole="Teachers" />
+        </EntityType>
+        <EntityType Name="Lessons_types">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Lessons" Relationship="Self.FK_Lessons_Lessons_types" FromRole="Lessons_types" ToRole="Lessons" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Teachers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FIO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descriotion" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Lessons" Relationship="Self.FK_Lessons_Teachers" FromRole="Teachers" ToRole="Lessons" />
+        </EntityType>
+        <EntityType Name="Times">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Start" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="End" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Dates" Relationship="Self.FK_Dates_Times" FromRole="Times" ToRole="Dates" />
+        </EntityType>
+        <EntityType Name="Week_days">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Dates" Relationship="Self.FK_Dates_Week_days" FromRole="Week_days" ToRole="Dates" />
+        </EntityType>
+        <Association Name="FK_Dates_Times">
+          <End Role="Times" Type="Self.Times" Multiplicity="1" />
+          <End Role="Dates" Type="Self.Dates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Times">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dates">
+              <PropertyRef Name="Times_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dates_Week_days">
+          <End Role="Week_days" Type="Self.Week_days" Multiplicity="1" />
+          <End Role="Dates" Type="Self.Dates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Week_days">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dates">
+              <PropertyRef Name="Week_days_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lessons_Dates">
+          <End Role="Dates" Type="Self.Dates" Multiplicity="1" />
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dates">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="Dates_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lessons_Disciplines">
+          <End Role="Disciplines" Type="Self.Disciplines" Multiplicity="1" />
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Disciplines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="Disciplines_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Eventes_Lessons">
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="1" />
+          <End Role="Eventes" Type="Self.Eventes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Eventes">
+              <PropertyRef Name="Lessons_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lessons_Lessons_types">
+          <End Role="Lessons_types" Type="Self.Lessons_types" Multiplicity="1" />
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons_types">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="Lessons_types_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lessons_Teachers">
+          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1" />
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teachers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="Teachers_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ScheduleBaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Dates" EntityType="Self.Dates" />
+          <EntitySet Name="Disciplines" EntityType="Self.Disciplines" />
+          <EntitySet Name="Eventes" EntityType="Self.Eventes" />
+          <EntitySet Name="Lessons" EntityType="Self.Lessons" />
+          <EntitySet Name="Lessons_types" EntityType="Self.Lessons_types" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Teachers" EntityType="Self.Teachers" />
+          <EntitySet Name="Times" EntityType="Self.Times" />
+          <EntitySet Name="Week_days" EntityType="Self.Week_days" />
+          <AssociationSet Name="FK_Dates_Times" Association="Self.FK_Dates_Times">
+            <End Role="Times" EntitySet="Times" />
+            <End Role="Dates" EntitySet="Dates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dates_Week_days" Association="Self.FK_Dates_Week_days">
+            <End Role="Week_days" EntitySet="Week_days" />
+            <End Role="Dates" EntitySet="Dates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_Dates" Association="Self.FK_Lessons_Dates">
+            <End Role="Dates" EntitySet="Dates" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_Disciplines" Association="Self.FK_Lessons_Disciplines">
+            <End Role="Disciplines" EntitySet="Disciplines" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Eventes_Lessons" Association="Self.FK_Eventes_Lessons">
+            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="Eventes" EntitySet="Eventes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_Lessons_types" Association="Self.FK_Lessons_Lessons_types">
+            <End Role="Lessons_types" EntitySet="Lessons_types" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_Teachers" Association="Self.FK_Lessons_Teachers">
+            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ScheduleBaseModelContainer" CdmEntityContainer="ScheduleBaseEntities">
+          <EntitySetMapping Name="Dates">
+            <EntityTypeMapping TypeName="ScheduleBaseModel.Dates">
+              <MappingFragment StoreEntitySet="Dates">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Start" ColumnName="Start" />
+                <ScalarProperty Name="End" ColumnName="End" />
+                <ScalarProperty Name="Cabinet" ColumnName="Cabinet" />
+                <ScalarProperty Name="Alternation" ColumnName="Alternation" />
+                <ScalarProperty Name="Week_days_Id" ColumnName="Week_days_Id" />
+                <ScalarProperty Name="Times_Id" ColumnName="Times_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Disciplines">
+            <EntityTypeMapping TypeName="ScheduleBaseModel.Disciplines">
+              <MappingFragment StoreEntitySet="Disciplines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Eventes">
+            <EntityTypeMapping TypeName="ScheduleBaseModel.Eventes">
+              <MappingFragment StoreEntitySet="Eventes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Lessons_Id" ColumnName="Lessons_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lessons">
+            <EntityTypeMapping TypeName="ScheduleBaseModel.Lessons">
+              <MappingFragment StoreEntitySet="Lessons">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Disciplines_Id" ColumnName="Disciplines_Id" />
+                <ScalarProperty Name="Lessons_types_Id" ColumnName="Lessons_types_Id" />
+                <ScalarProperty Name="Teachers_Id" ColumnName="Teachers_Id" />
+                <ScalarProperty Name="Dates_Id" ColumnName="Dates_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lessons_types">
+            <EntityTypeMapping TypeName="ScheduleBaseModel.Lessons_types">
+              <MappingFragment StoreEntitySet="Lessons_types">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ScheduleBaseModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teachers">
+            <EntityTypeMapping TypeName="ScheduleBaseModel.Teachers">
+              <MappingFragment StoreEntitySet="Teachers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="Descriotion" ColumnName="Descriotion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Times">
+            <EntityTypeMapping TypeName="ScheduleBaseModel.Times">
+              <MappingFragment StoreEntitySet="Times">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Start" ColumnName="Start" />
+                <ScalarProperty Name="End" ColumnName="End" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Week_days">
+            <EntityTypeMapping TypeName="ScheduleBaseModel.Week_days">
+              <MappingFragment StoreEntitySet="Week_days">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

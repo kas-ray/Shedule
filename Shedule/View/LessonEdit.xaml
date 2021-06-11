@@ -1,0 +1,97 @@
+﻿<Window x:Class="Shedule.View.LessonEdit"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Shedule.View"
+        mc:Ignorable="d" x:Name="WinLessonEdit"
+        Title="Редактирование пары" Height="450" Width="440"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" BorderBrush="Gray">
+    <Grid Background="#F3F7FA">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--РЕДАКТИРОВАНИЕ ПРЕПОДА-->
+        <TextBlock Text="Преподаватель:" Grid.Row="0" 
+                   VerticalAlignment="Center" Margin="10 0"
+                   Style="{StaticResource BoldTextStyle}"/>
+        <ComboBox ItemsSource="{Binding Path=TeachersList}" 
+                  SelectedItem="{Binding Path=SelectedLesson.Teachers}"
+                  DisplayMemberPath="FIO" SelectedValuePath="FIO"
+                  IsEditable="True" Grid.Column="1" Grid.Row="0"
+                  Height="30"/>
+        <!--РЕДАКТИРОВАНИЕ ДАТЫ НАЧАЛА-->
+        <TextBlock Text="Начало:" Grid.Row="1" 
+                   VerticalAlignment="Center"
+                   Margin="10 0"
+                   Style="{StaticResource BoldTextStyle}"/>
+        <DatePicker IsEnabled="True" Height="30"
+                    SelectedDate="{Binding Path=SelectedLesson.Dates.Start,  
+                    UpdateSourceTrigger=PropertyChanged}" 
+                    Grid.Column="1" Grid.Row="1"/>
+        <!--РЕДАКТИРОВАНИЕ ДАТЫ КОНЦА-->
+        <TextBlock Text="Конец:" Grid.Row="2"
+                   VerticalAlignment="Center"
+                   Margin="10 0"
+                   Style="{StaticResource BoldTextStyle}"/>
+        <DatePicker IsEnabled="True" Height="30"
+                    SelectedDate="{Binding Path=SelectedLesson.Dates.End,  
+                    UpdateSourceTrigger=PropertyChanged}" 
+                    Grid.Column="1" Grid.Row="2"/>
+        <!--РЕДАКТИРОВАНИЕ ЧЕРЕДОВАНИЯ-->
+        <TextBlock Text="Чередование:" Grid.Row="3" 
+                   VerticalAlignment="Center"
+                   Margin="10 0"
+                   Style="{StaticResource BoldTextStyle}"/>
+        <CheckBox IsChecked="{Binding Path=SelectedLesson.Dates.Alternation}" 
+                  IsEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Center"
+                  Grid.Column="1" Grid.Row="3"/>
+        <!--РЕДАКТИРОВАНИЕ НОМЕРА ПАРЫ-->
+        <TextBlock Text="Пара:" Grid.Row="4" 
+                   VerticalAlignment="Center"
+                   Margin="10 0"
+                   Style="{StaticResource BoldTextStyle}"/>
+        <ComboBox ItemsSource="{Binding TimesList}" 
+                  SelectedItem="{Binding Path=SelectedLesson.Dates.Times}"
+                  DisplayMemberPath="Id" SelectedValuePath="Id"
+                  IsEditable="True" Grid.Column="1" Grid.Row="4"
+                  Height="30"/>
+        <!--РЕДАКТИРОВАНИЕ НОМЕРА КАБИНЕТА-->
+        <TextBlock Text="Кабинет:" Grid.Row="5" 
+                   VerticalAlignment="Center"
+                   Margin="10 0"
+                   Style="{StaticResource BoldTextStyle}"/>
+        <TextBox Text="{Binding Path=SelectedLesson.Dates.Cabinet,  
+                 UpdateSourceTrigger=PropertyChanged}" Height="30"
+                 Grid.Column="1" Grid.Row="5" MaxLength="9"/>
+        <!--РЕДАКТИРОВАНИЕ ДНЯ НЕДЕЛИ-->
+        <TextBlock Text="День недели:" Grid.Row="6" 
+                   VerticalAlignment="Center"
+                   Margin="10 0"
+                   Style="{StaticResource BoldTextStyle}"/>
+        <ComboBox ItemsSource="{Binding Week_DaysList}" 
+                  SelectedItem="{Binding Path=SelectedLesson.Dates.Week_days}"
+                  DisplayMemberPath="Name" SelectedValuePath="Name"
+                  IsEditable="True" Grid.Column="1" Grid.Row="6"
+                  Height="30"/>
+        <!--ДЕЙСТВИЯ-->
+        <Button Command="{Binding Path=SaveDateCommand}" 
+                Content="Сохранить" Grid.Row="7" Margin="4"/>
+        <Button Command="{Binding Path=CancelDateCommand}" 
+                Content="Отменить" Grid.Row="7" Grid.Column="1"
+                Margin="4"/>
+    </Grid>
+</Window>
